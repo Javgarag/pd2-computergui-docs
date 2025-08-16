@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>ComputerGui</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/fontawesome.min.css" rel="stylesheet">
+        <link href="css/brands.min.css" rel="stylesheet">
+        <link href="css/solid.min.css" rel="stylesheet">
+        <link href="css/v4-font-face.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">ComputerGui</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="." class="nav-link active" aria-current="page">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Modules</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="modules/making/" class="dropdown-item">Making your own modules</a>
+</li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Class Documentation</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="modules/classes/ComputerObjectBase/" class="dropdown-item">ComputerObjectBase</a>
+</li>
+            
+<li>
+    <a href="modules/classes/ComputerWindow/" class="dropdown-item">ComputerWindow</a>
+</li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="events/" class="nav-link">Events</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="elements/" class="nav-link">Elements</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="modules/making/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#introduction" class="nav-link">Introduction</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#installation" class="nav-link">Installation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#unit-setup" class="nav-link">Unit setup</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#tweak-data-configuration" class="nav-link">Tweak data configuration</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="introduction">Introduction</h1>
+<p>The ComputerGui class is a custom-made unit extension that adds an interactable screen (through mouse input) with window management logic to a select object inside an unit's <code>.model</code> file. It is designed to be highly customizable through Lua configuration, allowing you to make your own 2D object classes to later reuse in many different windows.</p>
+<h2 id="installation">Installation</h2>
+<ol>
+<li>Download the extension files and extract it to your map's root folder.</li>
+<li>Add the following XML to your <code>main.xml</code> file, outside the <code>&lt;level&gt;</code> tag:</li>
+</ol>
+<pre><code class="language-xml">&lt;AddFiles directory=&quot;assets&quot;&gt;
+    &lt;!-- ComputerGui: window corners (can't rotate vanilla texture or else they escape monitor, Diesel limitation) --&gt;
+    &lt;dds path=&quot;guis/textures/pd2/hud_corner_down_left&quot;/&gt;
+    &lt;dds path=&quot;guis/textures/pd2/hud_corner_down_right&quot;/&gt;
+    &lt;dds path=&quot;guis/textures/pd2/hud_corner_top_right&quot;/&gt;
+&lt;/AddFiles&gt;
+&lt;Hooks directory=&quot;hooks&quot;&gt;
+    &lt;!-- ComputerGui: client syncing --&gt;
+    &lt;hook file=&quot;UnitNetworkHandler.lua&quot; source_file=&quot;lib/network/handlers/unitnetworkhandler&quot;/&gt;
+&lt;/Hooks&gt;
+&lt;Elements directory=&quot;elements&quot;&gt;
+    &lt;!-- ComputerGui --&gt;
+    &lt;element name=&quot;ComputerSetValue&quot;/&gt;
+    &lt;element name=&quot;ComputerValueFilter&quot;/&gt;
+&lt;/Elements&gt;
+</code></pre>
+<ol>
+<li>Add the following XML to your <code>main.xml</code> file, inside the <code>&lt;level&gt;</code> tag:</li>
+</ol>
+<pre><code class="language-xml">&lt;classes directory=&quot;classes&quot;&gt;
+    &lt;class file=&quot;ComputerGui/ComputerGui.lua&quot;/&gt;
+&lt;/classes&gt;
+</code></pre>
+<p>You're now all set to use the extension.</p>
+<h2 id="unit-setup">Unit setup</h2>
+<p>See <a href="https://wiki.modworkshop.net/books/payday-2-mod-creation/page/unit-file">this page</a> for reference on <code>.unit</code> files. For this extension, the bare minimum that needs to be included in your <code>.unit</code> file's extensions is:</p>
+<pre><code class="language-xml">&lt;extension name=&quot;damage&quot; class=&quot;UnitDamage&quot;/&gt;
+&lt;extension name=&quot;computer_gui&quot; class=&quot;ComputerGui&quot;&gt;
+    &lt;var name=&quot;gui_object&quot; value=&quot;timer_gui&quot;/&gt;
+    &lt;var name=&quot;camera_object&quot; value=&quot;camera_object_name&quot;/&gt;
+    &lt;var name=&quot;tweak_data&quot; value=&quot;tweak_data_name&quot;/&gt;
+&lt;/extension&gt;
+</code></pre>
+<ul>
+<li><code>UnitDamage</code>: A base game extension which is required for sequence managers.</li>
+<li><code>gui_object</code>: Where the graphical interface will be created and displayed. This is the name of an object inside the model, which should be a plane (curved surfaces not tested, but would probably not work).</li>
+<li><code>camera_object</code>: An empty where the camera will be locked when entering the interaction state.</li>
+<li><code>tweak_data</code>: The <code>tweak_data.computer_gui</code> entry containing your workspace and application definitions. More information on this on the next section.</li>
+</ul>
+<p>To actually start-up the screen, you'll also need some sort of interaction extension in your unit. You can find plenty of them in the base game. By default, they look for the <code>interact</code> sequence in your unit's <a href="https://wiki.modworkshop.net/books/payday-2-mod-creation/page/sequence-manager-xml">sequence manager</a>. This sequence should include a reference to the extension's <code>start</code> method:</p>
+<pre><code class="language-xml">&lt;sequence editable_state=&quot;false&quot; name=&quot;'interact'&quot; triggable=&quot;false&quot;&gt;
+    &lt;function extension=&quot;'computer_gui'&quot; function=&quot;'start'&quot;/&gt;
+&lt;/sequence&gt;
+</code></pre>
+<h2 id="tweak-data-configuration">Tweak data configuration</h2>
+<p>Each map project you create needs its own tweak data definition in order to avoid conflicts with other maps making use of this extension. <code>ComputerGui.TWEAK_DATA_FILE</code> indicates the file inside your map where you edit the tweak table; you can change the path however you prefer. The extension will load this file with <code>dofile()</code> on initialization.</p>
+<p>An empty configuration file, with no applications or workspaces defined, will resemble the following:</p>
+<pre><code class="language-lua">local MODULE_DIRECTORY = BeardLib.current_level._mod.ModPath .. &quot;classes/ComputerGui/modules/&quot;
+local REQUIRED_MODULES = {
+    &quot;base/ComputerWindow.lua&quot;,
+    &quot;base/ComputerBitmap.lua&quot;,
+    &quot;base/ComputerText.lua&quot;,
+    &quot;base/ComputerRect.lua&quot;
+}
+local modules = {}
+
+for _, module in pairs(REQUIRED_MODULES) do
+    dofile(MODULE_DIRECTORY .. module)
+end
+for _, module in pairs(modules) do
+    dofile(MODULE_DIRECTORY .. module)
+end
+
+tweak_data.computer_gui = {}
+</code></pre>
+<ul>
+<li><code>MODULE_DIRECTORY</code>: The directory inside your map where module files are to be loaded from.</li>
+<li><code>REQUIRED_MODULES</code>: Absolute dependencies <em>ComputerGui</em> needs in order to work.</li>
+<li><code>modules</code>: A table containing module files, inside which, you define classes based on <a href="modules/classes/ComputerObjectBase/">ComputerObjectBase</a>. ComputerGui comes with some extra modules as example material; feel free to modify them.</li>
+<li><code>dofile(BeardLib...</code>: Module loader, which first loads <em>ComputerObjectBase</em> (required) and then any other modules specified in <code>modules</code>. </li>
+<li><code>tweak_data.computer_gui</code>: Tweak data table the extension will refer to when loading your configuration.</li>
+</ul>
+<p>A very basic GUI definition, with no GlobalEvents or mission interaction, which adds a single application which, when opened, pops-up an "Access Denied" window:</p>
+<pre><code class="language-lua">tweak_data.computer_gui = {
+    example = {
+        workspace = {
+            background_texture = &quot;guis/textures/computergui/backgrounds/example&quot;,
+        },
+        applications = {
+            {
+                name = &quot;computer_gui_app_example&quot;,
+                icon = &quot;guis/textures/computergui/backgrounds/application_icon_example&quot;,
+                window = {
+                    config = {
+                        halign = &quot;grow&quot;,
+                        valign = &quot;grow&quot;,
+                        w = 340,
+                        h = 84
+                    },
+                    background_color = Color.black,
+                    children = {
+                        ComputerBitmap:new({
+                            config = {
+                                name = &quot;icon&quot;,
+                                texture = &quot;guis/textures/pd2/feature_crimenet_heat&quot;,
+                                w = 64,
+                                h = 64,
+                                x = 10,
+                                y = 10
+                            },
+                            events = {}
+                        }),
+                        ComputerText:new({
+                            config = {
+                                name = &quot;text&quot;,
+                                text = &quot;Access denied.&quot;,
+                                font = &quot;fonts/font_medium_noshadow_mf&quot;,
+                                render_template = &quot;Text&quot;,
+                                font_size = 40,
+                                color = Color.white,
+                                x = 85,
+                                vertical = &quot;center&quot;
+                            },
+                            events = {}
+                        })
+                    },
+                    events = {
+                        open = &quot;clbk_open&quot;,
+                        close = &quot;clbk_close&quot;,
+                        attention = &quot;clbk_attention&quot;
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>See <a href="modules/classes/ComputerObjectBase/">ComputerObjectBase</a> for a detailed rundown on how to write tweak data for modules.</p>
+<p>If you plan on reusing the same panel for multiple applications, it is recommended to create a "preset" table for its configuration and then use the game's <code>deep_clone(table)</code> global method to use it to define the <code>window</code> value.</p>
+<h3 id="workspace-values">Workspace values</h3>
+<pre><code class="language-lua">workspace = {
+    background_texture = &quot;guis/textures/computergui/backgrounds/example&quot;,
+}
+</code></pre>
+<ul>
+<li><strong><code>background_texture</code></strong>: The texture to use for the background of the entire interface.</li>
+</ul>
+<p><strong>Bolded values</strong> are required and will cause a crash if missing.</p>
+<h3 id="application-values">Application values</h3>
+<pre><code class="language-lua">applications = {
+    {
+        name = &quot;app_name&quot;,
+        icon = &quot;path/to/icon/texture&quot;,
+        window = {...}
+    },
+    {
+        name = &quot;app_two_name&quot;,
+        icon = &quot;path/to/icon/texture_two&quot;,
+        window = {...}
+    }
+}
+</code></pre>
+<ul>
+<li><code>applications</code>: An array containing applications. For each item:<ul>
+<li><strong><code>name</code></strong>: The localized name of the application which will be written alongside its desktop icon.</li>
+<li><strong><code>icon</code></strong>: The texture to use for the icon of the application.</li>
+<li><strong><code>window</code></strong>: Tweak data for creating a <a href="modules/classes/ComputerWindow/">ComputerWindow</a> object which will be displayed when the player clicks on the application icon.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Bolded values</strong> are required and will cause a crash if missing.</p>
+<h3 id="note-on-using-textures">Note on using textures</h3>
+<p>Base game textures load as you use them. For custom textures, you will need to add an <a href="https://luffyyy.gitbook.io/beardlib/modules/addfilesmodule">AddFiles</a> module to your <code>main.xml</code> file.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js"></script>
+        <script src="search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2025-08-16 20:38:01.079858+00:00
+-->
