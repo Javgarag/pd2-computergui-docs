@@ -1,0 +1,10 @@
+site_name: ComputerGui
+nav:
+  - Home: index.md
+  - Modules:
+    - Making your own modules: modules/making.md
+    - Class Documentation:
+      - ComputerObjectBase: modules/classes/ComputerObjectBase.md
+      - ComputerWindow: modules/classes/ComputerWindow.md
+  - Events: events.md
+  - Elements: elements.md
