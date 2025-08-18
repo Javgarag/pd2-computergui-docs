@@ -124,6 +124,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-bs-level="2"><a href="#note-on-layers" class="nav-link">Note on layers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -146,7 +150,8 @@
 </ul>
 <h2 id="setup">Setup</h2>
 <h3 id="computerwindowinittweak_data"><code>ComputerWindow:init(tweak_data)</code></h3>
-<p>Inserts a <em>ComputerRect</em> <code>drag_hitbox</code> and a <em>ComputerBitmap</em> <code>close_button</code> object to <code>self._tweak_data.children</code>. For information on setting up the tweak data, see <a href="../ComputerObjectBase/">ComputerObjectBase</a>.</p>
+<p>Inserts a <em>ComputerRect</em> <code>drag_hitbox</code> and a <em>ComputerBitmap</em> <code>close_button</code> object to <code>self._tweak_data.children</code>. Also adds three events to the window: <code>open</code>, <code>close</code> and <code>attention</code>.</p>
+<p>For information on setting up the tweak data, see <a href="../ComputerObjectBase/">ComputerObjectBase</a>.</p>
 <h3 id="computerwindowcreateparent"><code>ComputerWindow:create(parent)</code></h3>
 <p>Creates a <em>Panel</em> instance as a child of <code>parent</code> through the <code>Panel:panel(config)</code> Diesel method and passes <code>self._tweak_data.config</code> as the first argument. Afterwards, a modified HUDBGBox is created as the base for the contents and then the <code>create()</code> method is called on every child object, with their parent being the window panel.</p>
 <h2 id="events">Events</h2>
@@ -167,7 +172,9 @@
 <h3 id="computerwindowmouse_variantx-y"><code>ComputerWindow:mouse_variant(x, y)</code></h3>
 <p>Returns the mouse variant specified for an object that contains position <code>(x, y)</code>. Defaults to "arrow".</p>
 <h3 id="computerwindowis_open"><code>ComputerWindow:is_open()</code></h3>
-<p>Returns whether the window is open or not.</p></div>
+<p>Returns whether the window is open or not.</p>
+<h2 id="note-on-layers">Note on layers</h2>
+<p>You are free to use layers in your windows however you like. <em>ComputerGui</em> will automatically calculate the layers you are using in a particular window and take those into account when managing multiple windows at once to avoid clipping.</p></div>
             </div>
         </div>
 

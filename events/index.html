@@ -149,22 +149,20 @@
             type = &quot;func&quot;,
             enabled = true,
             event = function(window, ...)
-                log(&quot;Mouse was pressed down.&quot;)
+                log(&quot;Mouse was pressed down on object: &quot; .. self:object():name() or &quot;bitmap object&quot;)
             end
         },
         mouse_released = {
-            type = &quot;func&quot;,
+            type = &quot;spawn&quot;,
             enabled = true,
-            event = function(window, ...)
-                log(&quot;Mouse was clicked.&quot;)
-            end
+            event = ComputerWindow:new(...)
         }
     },
     mouse_variant = &quot;link&quot;
 })
 </code></pre>
 <p>This would create a bitmap object which is highly reactive to mouse interactions. The <code>mouse_variant</code> value is used to determine what texture rect the mouse texture should have when over the object.  Possible values are <code>arrow</code> (default), <code>link</code>, <code>hand</code> and <code>grab</code>; you can define more at <code>ComputerGui.mouse_variants</code>.</p>
-<p>Event names are used as the key for a table where you actually define it. See below for details on possible <code>type</code> values and event names. Events are triggered on the <em>ComputerWindow</em> class first by the unit extension. The <em>ComputerWindow</em> class will then automatically pass the event to child objects, passing itself as the first argument. Events may have certain trigger filters; for more information on these, check out the table below or <code>ComputerWindow:trigger_event()</code>. </p>
+<p>Event names are used as the key for a table where you actually define it. See below for details on possible <code>type</code> values and event names. Events are triggered on the <em>ComputerWindow</em> class first by the unit extension. The <em>ComputerWindow</em> class will then automatically pass the event to child objects. Events may have certain trigger filters; for more information on these, check out the table below or <code>ComputerWindow:trigger_event()</code>. </p>
 <p>You can make your own events by simply adding their name to the configuration and calling them by using the aforementioned method on the corresponding window; say, when a timer finishes, a video plays, <em>etc</em>. </p>
 <h2 id="event-list">Event list</h2>
 <table>
@@ -225,12 +223,31 @@
 </table>
 <h2 id="event-types">Event types</h2>
 <ul>
-<li><code>func</code>: run a function</li>
+<li><code>func</code>: run a function as if it were a method of the current object (<code>self</code> is available for use)</li>
 <li><code>callback</code>: use a callback to the specified method on the object's class</li>
-<li><code>spawn</code>: spawn a new window defined through the specified configuration <strong>(NOT IMPLEMENTED)</strong></li>
+<li><code>spawn</code>: spawn a new <em>ComputerWindow</em> defined through the specified configuration. The new window will lock the parent window until it is closed and its parent will be set to the parent window. A child window can spawn more child windows from itself; the base application window will pass events through all the windows, in order, until the last spawned child window is reached.</li>
 </ul>
 <h2 id="playing-sounds">Playing sounds</h2>
-<p>To play sounds on events, add a <code>post_event</code> table with the event ID you want to play (the corresponding soundbank should be loaded if it is a vanilla sound; disregard for custom sounds, more info on event IDs <a href="https://modworkshop.net/mod/53326">here</a>). Additionally, you can use flags to run a certain callback function. These are defined in-engine and are <code>end_of_event</code>, <code>marker</code> and <code>duration</code> ; Diesel will call your function with the following arguments:</p>
+<p>To play sounds on events, add a <code>post_event</code> table with the event ID you want to play (the corresponding soundbank should be loaded if it is a vanilla sound; disregard for custom sounds, more info on event IDs <a href="https://modworkshop.net/mod/53326">here</a>). </p>
+<pre><code class="language-lua">post_event = {
+    sound_event_id = &quot;highlight&quot;,
+    clbk = &quot;clbk_highlight_sound_end&quot;,
+    flags = {
+        &quot;end_of_event&quot;
+    }
+}
+</code></pre>
+<ul>
+<li><code>sound_event_id</code>: The event ID.</li>
+<li><code>clbk</code>: An optional callback function.</li>
+<li><code>flags</code>: A table of "flags" that will run the callback function. These are defined in-engine and are:<ul>
+<li><code>end_of_event</code> </li>
+<li><code>marker</code> </li>
+<li><code>duration</code></li>
+</ul>
+</li>
+</ul>
+<p>Diesel will call your callback function with the following arguments:</p>
 <pre><code class="language-lua">callback_func(instance, sound_source, event_type, cookie, label, identifier, position)
 </code></pre>
 <p>For further reference, see the <a href="https://github.com/steam-test1/Payday-2-LuaJIT-Complete">PAYDAY 2 LuaJit repository</a>, particularly, <code>VoiceBriefingManager:_sound_callback()</code>.</p></div>

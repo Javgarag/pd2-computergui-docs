@@ -112,7 +112,7 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#actually-making-cool-stuff-happen" class="nav-link">Actually making cool stuff happen</a>
+            <li class="nav-item" data-bs-level="2"><a href="#actually-making-cool-stuff" class="nav-link">Actually making cool stuff</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -126,15 +126,16 @@
 <h1 id="making-modules">Making modules</h1>
 <p>Any given module needs to be based on <a href="../classes/ComputerObjectBase/">ComputerObjectBase</a> and must contain the following methods:</p>
 <h2 id="required-methods">Required methods</h2>
-<h3 id="inittweak_data"><code>init(tweak_data)</code></h3>
+<h3 id="inittweak_data-subclass"><code>init(tweak_data, subclass)</code></h3>
 <p><em>This method </em><em>must call the superclass method of the same name</em><em>.</em></p>
+<p>You can add any tweak data keys you may need to your custom module. Say, a timer length, or the color for a certain bitmap at a certain event trigger. You must still respect the base class' tweak data requirements.</p>
 <h3 id="createparent_object-extension-parent"><code>create(parent_object, extension, parent)</code></h3>
-<p><em>This method </em><em>must call the superclass method of the same name</em><em>.</em></p>
-<p>This method <strong>must define <code>self._object</code> as a Diesel interface object.</strong> This means a panel, a bitmap, a rect, a text, a gradient, a polyline, a video, <em>etc</em>. See <a href="https://github.com/Krimzin/pd2-class-members">engine classes</a> for reference. You can go however crazy you wanna go here.</p>
+<p><em>This method </em><em>must call the superclass method of the same name.</em>**</p>
+<p>This method <strong>must define <code>self._object</code> as a Diesel interface object.</strong> This means a panel, a bitmap, a rect, a text, a gradient, a polyline, a video, <em>etc</em>. See <a href="https://github.com/Krimzin/pd2-class-members">engine classes</a> for reference. You can go however crazy you wanna go here. <strong>Do not add children modules inside your custom module; modules can only be parented to <em>ComputerWindow</em> objects.</strong></p>
 <h2 id="optional-methods">Optional methods</h2>
 <h3 id="updatet-dt"><code>update(t, dt)</code></h3>
 <p>For frame-based updating as long as the computer extension is active.</p>
-<h2 id="actually-making-cool-stuff-happen">Actually making cool stuff happen</h2>
+<h2 id="actually-making-cool-stuff">Actually making cool stuff</h2>
 <p>Use the extension's base <a href="../../events/">events</a> as triggers for mouse clicks, hovers, window opening, <em>etc</em>. From there, you can trigger any extra interface event you want to add. </p>
 <h3 id="making-the-interface-adapt-to-mission-events">Making the interface adapt to mission events</h3>
 <p>To set the state of the interface with mission logic, see the <a href="../../elements/">custom elements</a>.</p>

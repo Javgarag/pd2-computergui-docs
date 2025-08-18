@@ -112,6 +112,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-bs-level="2"><a href="#values" class="nav-link">Values</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -136,6 +140,8 @@
 <h2 id="methods">Methods</h2>
 <h3 id="computerobjectbasecreate"><code>ComputerObjectBase:create()</code></h3>
 <p>Adds a reference to its parent and the extension instance, then computes <code>config</code> properties with <code>self:compute_properties()</code>. Modules <strong>need</strong> to refer to this method when running their <code>create()</code> method before doing any additional creation.</p>
+<h3 id="computerobjectbasepost_create"><code>ComputerObjectBase:post_create()</code></h3>
+<p>Sets up the events after all the objects are created for proper callbacks.</p>
 <h3 id="computerobjectbasesetup_events"><code>ComputerObjectBase:setup_events()</code></h3>
 <p>Sets up possible events of type <code>callback</code> <em>(implemented)</em> or <code>spawn</code> <em>(not implemented)</em>. </p>
 <h3 id="computerobjectbasecompute_properties"><code>ComputerObjectBase:compute_properties()</code></h3>
@@ -147,13 +153,16 @@ end
 <h3 id="computerobjectbasetrigger_eventevent_name"><code>ComputerObjectBase:trigger_event(event_name, ...)</code></h3>
 <p>Triggers the corresponding event on itself and passes any extra arguments to the corresponding handler.</p>
 <h3 id="computerobjectbaseis_visiblex-y"><code>ComputerObjectBase:is_visible(x, y)</code></h3>
-<p>Returns whether the object is visible at position <code>(x, y)</code> or not, that is, it is not obscured by windows.</p>
+<p>Returns whether the object is visible at position <code>(x, y)</code> or not, that is, it is not obscured by windows and it itself is visible (through <code>Object:visible()</code>).</p>
 <h3 id="computerobjectbasemouse_variant"><code>ComputerObjectBase:mouse_variant()</code></h3>
 <p>Returns the provided <code>mouse_variant</code>.</p>
 <h3 id="computerobjectbaseobject"><code>ComputerObjectBase:object()</code></h3>
 <p>Returns the Diesel object.</p>
 <h3 id="computerobjectbasechildren"><code>ComputerObjectBase:children()</code></h3>
-<p>Returns the instance's children instances.</p></div>
+<p>Returns the instance's children instances.</p>
+<h2 id="values">Values</h2>
+<h3 id="self_parent"><code>self._parent</code></h3>
+<p>Returns the parent <em>ComputerWindow</em>.</p></div>
             </div>
         </div>
 

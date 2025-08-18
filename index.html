@@ -137,8 +137,9 @@
     &lt;dds path=&quot;guis/textures/pd2/hud_corner_top_right&quot;/&gt;
 &lt;/AddFiles&gt;
 &lt;Hooks directory=&quot;hooks&quot;&gt;
-    &lt;!-- ComputerGui: client syncing --&gt;
+    &lt;!-- ComputerGui --&gt;
     &lt;hook file=&quot;UnitNetworkHandler.lua&quot; source_file=&quot;lib/network/handlers/unitnetworkhandler&quot;/&gt;
+    &lt;hook file=&quot;FPCameraPlayerBase.lua&quot; source_file=&quot;lib/units/cameras/fpcameraplayerbase&quot;/&gt;
 &lt;/Hooks&gt;
 &lt;Elements directory=&quot;elements&quot;&gt;
     &lt;!-- ComputerGui --&gt;
@@ -179,6 +180,7 @@
 <p>An empty configuration file, with no applications or workspaces defined, will resemble the following:</p>
 <pre><code class="language-lua">local MODULE_DIRECTORY = BeardLib.current_level._mod.ModPath .. &quot;classes/ComputerGui/modules/&quot;
 local REQUIRED_MODULES = {
+    &quot;base/ComputerObjectBase.lua&quot;,
     &quot;base/ComputerWindow.lua&quot;,
     &quot;base/ComputerBitmap.lua&quot;,
     &quot;base/ComputerText.lua&quot;,
@@ -202,7 +204,7 @@ tweak_data.computer_gui = {}
 <li><code>dofile(BeardLib...</code>: Module loader, which first loads <em>ComputerObjectBase</em> (required) and then any other modules specified in <code>modules</code>. </li>
 <li><code>tweak_data.computer_gui</code>: Tweak data table the extension will refer to when loading your configuration.</li>
 </ul>
-<p>A very basic GUI definition, with no GlobalEvents or mission interaction, which adds a single application which, when opened, pops-up an "Access Denied" window:</p>
+<p>A very basic GUI definition, with no events, which adds a single application which, when opened, pops-up an "Access Denied" window:</p>
 <pre><code class="language-lua">tweak_data.computer_gui = {
     example = {
         workspace = {
@@ -245,11 +247,6 @@ tweak_data.computer_gui = {}
                             },
                             events = {}
                         })
-                    },
-                    events = {
-                        open = &quot;clbk_open&quot;,
-                        close = &quot;clbk_close&quot;,
-                        attention = &quot;clbk_attention&quot;
                     }
                 }
             }
@@ -262,10 +259,18 @@ tweak_data.computer_gui = {}
 <h3 id="workspace-values">Workspace values</h3>
 <pre><code class="language-lua">workspace = {
     background_texture = &quot;guis/textures/computergui/backgrounds/example&quot;,
+    start_post_event = {
+        sound_event_id = &quot;highlight&quot;,
+        clbk = &quot;clbk_highlight_sound_end&quot;,
+        flags = {
+            &quot;end_of_event&quot;
+        }
+    }
 }
 </code></pre>
 <ul>
 <li><strong><code>background_texture</code></strong>: The texture to use for the background of the entire interface.</li>
+<li><code>start_post_event</code>: An event to play when the interface starts up. Refer to <a href="events/">Events/Playing Sounds</a></li>
 </ul>
 <p><strong>Bolded values</strong> are required and will cause a crash if missing.</p>
 <h3 id="application-values">Application values</h3>
@@ -374,5 +379,5 @@ tweak_data.computer_gui = {}
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-08-16 20:38:01.079858+00:00
+Build Date UTC : 2025-08-18 11:52:51.537316+00:00
 -->
