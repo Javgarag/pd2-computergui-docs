@@ -25,15 +25,13 @@ ComputerBitmap:new({
             type = "func",
             enabled = true,
             event = function(window, ...)
-                log("Mouse was pressed down.")
+                log("Mouse was pressed down on object: " .. self:object():name() or "bitmap object")
             end
         },
         mouse_released = {
-            type = "func",
+            type = "spawn",
             enabled = true,
-            event = function(window, ...)
-                log("Mouse was clicked.")
-            end
+            event = ComputerWindow:new(...)
         }
     },
     mouse_variant = "link"
@@ -41,7 +39,7 @@ ComputerBitmap:new({
 ```
 This would create a bitmap object which is highly reactive to mouse interactions. The `mouse_variant` value is used to determine what texture rect the mouse texture should have when over the object.  Possible values are `arrow` (default), `link`, `hand` and `grab`; you can define more at `ComputerGui.mouse_variants`.
 
-Event names are used as the key for a table where you actually define it. See below for details on possible `type` values and event names. Events are triggered on the *ComputerWindow* class first by the unit extension. The *ComputerWindow* class will then automatically pass the event to child objects, passing itself as the first argument. Events may have certain trigger filters; for more information on these, check out the table below or `ComputerWindow:trigger_event()`. 
+Event names are used as the key for a table where you actually define it. See below for details on possible `type` values and event names. Events are triggered on the *ComputerWindow* class first by the unit extension. The *ComputerWindow* class will then automatically pass the event to child objects. Events may have certain trigger filters; for more information on these, check out the table below or `ComputerWindow:trigger_event()`. 
 
 You can make your own events by simply adding their name to the configuration and calling them by using the aforementioned method on the corresponding window; say, when a timer finishes, a video plays, *etc*. 
 
@@ -60,12 +58,30 @@ You can make your own events by simply adding their name to the configuration an
 | lost_focus | Clicking outside of the application window while being focused | - |
 
 ## Event types
-* `func`: run a function
+* `func`: run a function as if it were a method of the current object (`self` is available for use)
 * `callback`: use a callback to the specified method on the object's class
-* `spawn`: spawn a new window defined through the specified configuration **(NOT IMPLEMENTED)**
+* `spawn`: spawn a new *ComputerWindow* defined through the specified configuration. The new window will lock the parent window until it is closed and its parent will be set to the parent window. A child window can spawn more child windows from itself; the base application window will pass events through all the windows, in order, until the last spawned child window is reached.
 
 ## Playing sounds
-To play sounds on events, add a `post_event` table with the event ID you want to play (the corresponding soundbank should be loaded if it is a vanilla sound; disregard for custom sounds, more info on event IDs [here](https://modworkshop.net/mod/53326)). Additionally, you can use flags to run a certain callback function. These are defined in-engine and are `end_of_event`, `marker` and `duration` ; Diesel will call your function with the following arguments:
+To play sounds on events, add a `post_event` table with the event ID you want to play (the corresponding soundbank should be loaded if it is a vanilla sound; disregard for custom sounds, more info on event IDs [here](https://modworkshop.net/mod/53326)). 
+
+```lua
+post_event = {
+    sound_event_id = "highlight",
+    clbk = "clbk_highlight_sound_end",
+    flags = {
+        "end_of_event"
+    }
+}
+```
+* `sound_event_id`: The event ID.
+* `clbk`: An optional callback function.
+* `flags`: A table of "flags" that will run the callback function. These are defined in-engine and are:
+    * `end_of_event` 
+    * `marker` 
+    * `duration`
+
+Diesel will call your callback function with the following arguments:
 ```lua
 callback_func(instance, sound_source, event_type, cookie, label, identifier, position)
 ```

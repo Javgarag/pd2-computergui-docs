@@ -15,7 +15,9 @@ A panel created as a child of another panel which can be parent to any type of o
 
 ## Setup
 ### `ComputerWindow:init(tweak_data)`
-Inserts a *ComputerRect* `drag_hitbox` and a *ComputerBitmap* `close_button` object to `self._tweak_data.children`. For information on setting up the tweak data, see [ComputerObjectBase](./ComputerObjectBase.md).
+Inserts a *ComputerRect* `drag_hitbox` and a *ComputerBitmap* `close_button` object to `self._tweak_data.children`. Also adds three events to the window: `open`, `close` and `attention`.
+
+For information on setting up the tweak data, see [ComputerObjectBase](./ComputerObjectBase.md).
 ### `ComputerWindow:create(parent)`
 Creates a *Panel* instance as a child of `parent` through the `Panel:panel(config)` Diesel method and passes `self._tweak_data.config` as the first argument. Afterwards, a modified HUDBGBox is created as the base for the contents and then the `create()` method is called on every child object, with their parent being the window panel.
 ## Events 
@@ -37,3 +39,6 @@ Returns whether the window is visible at position `(x, y)` or not, that is, it i
 Returns the mouse variant specified for an object that contains position `(x, y)`. Defaults to "arrow".
 ### `ComputerWindow:is_open()`
 Returns whether the window is open or not.
+
+## Note on layers
+You are free to use layers in your windows however you like. *ComputerGui* will automatically calculate the layers you are using in a particular window and take those into account when managing multiple windows at once to avoid clipping.

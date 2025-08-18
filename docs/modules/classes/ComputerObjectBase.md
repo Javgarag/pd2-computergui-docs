@@ -16,6 +16,8 @@ Shared base class that any object module requires in order to function. Overridi
 ## Methods
 ### `ComputerObjectBase:create()`
 Adds a reference to its parent and the extension instance, then computes `config` properties with `self:compute_properties()`. Modules **need** to refer to this method when running their `create()` method before doing any additional creation.
+### `ComputerObjectBase:post_create()`
+Sets up the events after all the objects are created for proper callbacks.
 ### `ComputerObjectBase:setup_events()`
 Sets up possible events of type `callback` *(implemented)* or `spawn` *(not implemented)*. 
 ### `ComputerObjectBase:compute_properties()`
@@ -28,10 +30,13 @@ end
 ### `ComputerObjectBase:trigger_event(event_name, ...)`
 Triggers the corresponding event on itself and passes any extra arguments to the corresponding handler.
 ### `ComputerObjectBase:is_visible(x, y)`
-Returns whether the object is visible at position `(x, y)` or not, that is, it is not obscured by windows.
+Returns whether the object is visible at position `(x, y)` or not, that is, it is not obscured by windows and it itself is visible (through `Object:visible()`).
 ### `ComputerObjectBase:mouse_variant()`
 Returns the provided `mouse_variant`.
 ### `ComputerObjectBase:object()`
 Returns the Diesel object.
 ### `ComputerObjectBase:children()`
 Returns the instance's children instances.
+## Values
+### `self._parent`
+Returns the parent *ComputerWindow*.

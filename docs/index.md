@@ -12,8 +12,9 @@ The ComputerGui class is a custom-made unit extension that adds an interactable 
     <dds path="guis/textures/pd2/hud_corner_top_right"/>
 </AddFiles>
 <Hooks directory="hooks">
-    <!-- ComputerGui: client syncing -->
+    <!-- ComputerGui -->
     <hook file="UnitNetworkHandler.lua" source_file="lib/network/handlers/unitnetworkhandler"/>
+    <hook file="FPCameraPlayerBase.lua" source_file="lib/units/cameras/fpcameraplayerbase"/>
 </Hooks>
 <Elements directory="elements">
     <!-- ComputerGui -->
@@ -58,6 +59,7 @@ An empty configuration file, with no applications or workspaces defined, will re
 ```lua
 local MODULE_DIRECTORY = BeardLib.current_level._mod.ModPath .. "classes/ComputerGui/modules/"
 local REQUIRED_MODULES = {
+    "base/ComputerObjectBase.lua",
     "base/ComputerWindow.lua",
 	"base/ComputerBitmap.lua",
     "base/ComputerText.lua",
@@ -80,7 +82,7 @@ tweak_data.computer_gui = {}
 * `dofile(BeardLib...`: Module loader, which first loads *ComputerObjectBase* (required) and then any other modules specified in `modules`. 
 * `tweak_data.computer_gui`: Tweak data table the extension will refer to when loading your configuration.
 
-A very basic GUI definition, with no GlobalEvents or mission interaction, which adds a single application which, when opened, pops-up an "Access Denied" window:
+A very basic GUI definition, with no events, which adds a single application which, when opened, pops-up an "Access Denied" window:
 ```lua
 tweak_data.computer_gui = {
     example = {
@@ -124,11 +126,6 @@ tweak_data.computer_gui = {
                             },
                             events = {}
                         })
-                    },
-                    events = {
-                        open = "clbk_open",
-                        close = "clbk_close",
-                        attention = "clbk_attention"
                     }
                 }
             }
@@ -143,9 +140,17 @@ If you plan on reusing the same panel for multiple applications, it is recommend
 ```lua
 workspace = {
     background_texture = "guis/textures/computergui/backgrounds/example",
+    start_post_event = {
+        sound_event_id = "highlight",
+        clbk = "clbk_highlight_sound_end",
+        flags = {
+            "end_of_event"
+        }
+    }
 }
 ```
 * **`background_texture`**: The texture to use for the background of the entire interface.
+* `start_post_event`: An event to play when the interface starts up. Refer to [Events/Playing Sounds](events.md)
 
 **Bolded values** are required and will cause a crash if missing.
 ### Application values
