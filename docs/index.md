@@ -44,10 +44,10 @@ See [this page](https://wiki.modworkshop.net/books/payday-2-mod-creation/page/un
 * `camera_object`: An empty where the camera will be locked when entering the interaction state.
 * `tweak_data`: The `tweak_data.computer_gui` entry containing your workspace and application definitions. More information on this on the next section.
 
-To actually start-up the screen, you'll also need some sort of interaction extension in your unit. You can find plenty of them in the base game. By default, they look for the `interact` sequence in your unit's [sequence manager](https://wiki.modworkshop.net/books/payday-2-mod-creation/page/sequence-manager-xml). This sequence should include a reference to the extension's `start` method:
+To actually start-up the screen, you'll also need some sort of interaction extension in your unit. You can find plenty of them in the base game. By default, they look for the `interact` sequence in your unit's [sequence manager](https://wiki.modworkshop.net/books/payday-2-mod-creation/page/sequence-manager-xml). This sequence should include a reference to the extension's `start` method and pass `params.unit` as the first parameter:
 ```xml
 <sequence editable_state="false" name="'interact'" triggable="false">
-    <function extension="'computer_gui'" function="'start'"/>
+    <function extension="'computer_gui'" function="'start'" param1="params.unit"/>
 </sequence>
 ```
 
