@@ -13,7 +13,6 @@ The ComputerGui class is a custom-made unit extension that adds an interactable 
 </AddFiles>
 <Hooks directory="hooks">
     <!-- ComputerGui -->
-    <hook file="UnitNetworkHandler.lua" source_file="lib/network/handlers/unitnetworkhandler"/>
     <hook file="FPCameraPlayerBase.lua" source_file="lib/units/cameras/fpcameraplayerbase"/>
 </Hooks>
 <Elements directory="elements">
@@ -133,6 +132,8 @@ tweak_data.computer_gui = {
     }
 }
 ```
+![Access Denied](./media/access_denied.gif)
+
 See [ComputerObjectBase](./modules/classes/ComputerObjectBase.md) for a detailed rundown on how to write tweak data for modules.
 
 If you plan on reusing the same panel for multiple applications, it is recommended to create a "preset" table for its configuration and then use the game's `deep_clone(table)` global method to use it to define the `window` value.
@@ -174,5 +175,11 @@ applications = {
     * **`window`**: Tweak data for creating a [ComputerWindow](modules/classes/ComputerWindow.md) object which will be displayed when the player clicks on the application icon.
 
 **Bolded values** are required and will cause a crash if missing.
-### Note on using textures
+
+## Things to note
+### Textures
 Base game textures load as you use them. For custom textures, you will need to add an [AddFiles](https://luffyyy.gitbook.io/beardlib/modules/addfilesmodule) module to your `main.xml` file.
+### Bloom
+The screen workspace is greatly affected by your environment's bloom value. Play around with it until you are satisfied about how the interface looks.
+### Multiplayer
+*ComputerGui* syncs mouse movement, presses, releases, and interaction interface closures. Everything else is left up to the local player. In practice, everything from window movement to their events and sounds will be synced. Dropping in when the mission has already started has not been thoroughly tested.
