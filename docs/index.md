@@ -179,6 +179,8 @@ applications = {
 ## Things to note
 ### Textures
 Base game textures load as you use them. For custom textures, you will need to add an [AddFiles](https://luffyyy.gitbook.io/beardlib/modules/addfilesmodule) module to your `main.xml` file.
+### Mouse clicks
+Currently, *ComputerGui* only listens to left mouse button clicks.
 ### Bloom
 The screen workspace is greatly affected by your environment's bloom value. Play around with it until you are satisfied about how the interface looks.
 ### Multiplayer

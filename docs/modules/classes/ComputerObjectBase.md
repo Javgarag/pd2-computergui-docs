@@ -4,12 +4,14 @@ Shared base class that any object module requires in order to function. Overridi
 ```lua
 {
     config = {},
-    events = {}
+    events = {},
+    mouse_variant = "arrow"
 }
 ```
 * `config`: A table containing the values that will be passed to Diesel to create interface objects. A malformed configuration table will crash the game with an *access violation*. You can use computed properties here to inherit config values from parent objects (see below).
  to be contained in *ComputerWindow* instances.
 * `events`: The events table. See [Events](../../events.md).
+* `mouse_variant`: Determines what texture rect the mouse texture should have when over the object.  Possible values are `arrow` (default), `link`, `hand` and `grab`; you can define more at `ComputerGui.mouse_variants`.
 
 *ComputerWindow* instances have some more entries in addition to the previous values. See their [tweak data configuration guide](./ComputerWindow.md).
 
