@@ -173,9 +173,9 @@
 <li><code>camera_object</code>: An empty where the camera will be locked when entering the interaction state.</li>
 <li><code>tweak_data</code>: The <code>tweak_data.computer_gui</code> entry containing your workspace and application definitions. More information on this on the next section.</li>
 </ul>
-<p>To actually start-up the screen, you'll also need some sort of interaction extension in your unit. You can find plenty of them in the base game. By default, they look for the <code>interact</code> sequence in your unit's <a href="https://wiki.modworkshop.net/books/payday-2-mod-creation/page/sequence-manager-xml">sequence manager</a>. This sequence should include a reference to the extension's <code>start</code> method:</p>
+<p>To actually start-up the screen, you'll also need some sort of interaction extension in your unit. You can find plenty of them in the base game. By default, they look for the <code>interact</code> sequence in your unit's <a href="https://wiki.modworkshop.net/books/payday-2-mod-creation/page/sequence-manager-xml">sequence manager</a>. This sequence should include a reference to the extension's <code>start</code> method and pass <code>params.unit</code> as the first parameter:</p>
 <pre><code class="language-xml">&lt;sequence editable_state=&quot;false&quot; name=&quot;'interact'&quot; triggable=&quot;false&quot;&gt;
-    &lt;function extension=&quot;'computer_gui'&quot; function=&quot;'start'&quot;/&gt;
+    &lt;function extension=&quot;'computer_gui'&quot; function=&quot;'start'&quot; param1=&quot;params.unit&quot;/&gt;
 &lt;/sequence&gt;
 </code></pre>
 <h2 id="tweak-data-configuration">Tweak data configuration</h2>
@@ -303,6 +303,8 @@ tweak_data.computer_gui = {}
 <h2 id="things-to-note">Things to note</h2>
 <h3 id="textures">Textures</h3>
 <p>Base game textures load as you use them. For custom textures, you will need to add an <a href="https://luffyyy.gitbook.io/beardlib/modules/addfilesmodule">AddFiles</a> module to your <code>main.xml</code> file.</p>
+<h3 id="mouse-clicks">Mouse clicks</h3>
+<p>Currently, <em>ComputerGui</em> only listens to left mouse button clicks.</p>
 <h3 id="bloom">Bloom</h3>
 <p>The screen workspace is greatly affected by your environment's bloom value. Play around with it until you are satisfied about how the interface looks.</p>
 <h3 id="multiplayer">Multiplayer</h3>
@@ -388,5 +390,5 @@ tweak_data.computer_gui = {}
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-08-20 02:00:13.656490+00:00
+Build Date UTC : 2025-08-20 02:33:34.942281+00:00
 -->

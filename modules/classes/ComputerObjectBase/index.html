@@ -128,13 +128,15 @@
 <h2 id="tweak-data-values">Tweak data values</h2>
 <pre><code class="language-lua">{
     config = {},
-    events = {}
+    events = {},
+    mouse_variant = &quot;arrow&quot;
 }
 </code></pre>
 <ul>
 <li><code>config</code>: A table containing the values that will be passed to Diesel to create interface objects. A malformed configuration table will crash the game with an <em>access violation</em>. You can use computed properties here to inherit config values from parent objects (see below).
  to be contained in <em>ComputerWindow</em> instances.</li>
 <li><code>events</code>: The events table. See <a href="../../../events/">Events</a>.</li>
+<li><code>mouse_variant</code>: Determines what texture rect the mouse texture should have when over the object.  Possible values are <code>arrow</code> (default), <code>link</code>, <code>hand</code> and <code>grab</code>; you can define more at <code>ComputerGui.mouse_variants</code>.</li>
 </ul>
 <p><em>ComputerWindow</em> instances have some more entries in addition to the previous values. See their <a href="../ComputerWindow/">tweak data configuration guide</a>.</p>
 <h2 id="methods">Methods</h2>
