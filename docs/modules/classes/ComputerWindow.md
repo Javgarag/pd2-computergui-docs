@@ -4,14 +4,20 @@
 A panel created as a child of another panel which can be parent to any type of object.
 
 ## Tweak data values
+*Default values:*
 ```lua
 {
     children = {},
-    background_color = Color()
+    background_color = Color.black,
+    can_user_close = true,
+    can_user_drag = true
 }
 ```
+
 * `children`: A table containing module instances (created by running their `new(tweak_data)` method and providing a tweak table, see [ComputerObjectBase](./ComputerObjectBase.md)).
 * `background_color`: The background color for the window. 
+* `can_user_close`: Whether the window is closable by the user or not.
+* `can_user_drag`: Whether the window is draggable by the user or not.
 
 ## Setup
 ### `ComputerWindow:init(tweak_data)`
@@ -39,6 +45,20 @@ Returns whether the window is visible at position `(x, y)` or not, that is, it i
 Returns the mouse variant specified for an object that contains position `(x, y)`. Defaults to "arrow".
 ### `ComputerWindow:is_open()`
 Returns whether the window is open or not.
+### `ComputerWindow:is_spawned()`
+Returns whether the window is a spawned window or not.
+### `ComputerWindow:active_child_window()`
+Returns the outermost child window currently active under the window, that is:
 
-## Note on layers
+- If there is a single spawned window present, that will be returned
+- If a spawned window spawned another window, the latest spawned window will be returned
+
+If no child window is found, returns `nil`.
+### `ComputerWindow:close_child_windows()`
+Close every child window currently active under the window.
+
+## Notes
+### Layers
 You are free to use layers in your windows however you like. *ComputerGui* will automatically calculate the layers you are using in a particular window and take those into account when managing multiple windows at once to avoid clipping.
+### Traversing child windows
+You can reference child window objects either through direct children (`self._parent`) or through the main window's `child_window`. The latter can be recursively applied through all child windows.

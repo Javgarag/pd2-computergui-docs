@@ -65,13 +65,15 @@ You can make your own events by simply adding their name to the configuration an
 ## Playing sounds
 To play sounds on events, add a `post_event` table with the event ID you want to play (the corresponding soundbank should be loaded if it is a vanilla sound; disregard for custom sounds, more info on event IDs [here](https://modworkshop.net/mod/53326)). 
 
+*The following are sample values and not default.*
 ```lua
 post_event = {
     sound_event_id = "highlight",
     clbk = "clbk_highlight_sound_end",
     flags = {
         "end_of_event"
-    }
+    },
+    stop_previous = false
 }
 ```
 * `sound_event_id`: The event ID.
@@ -80,6 +82,7 @@ post_event = {
     * `end_of_event` 
     * `marker` 
     * `duration`
+* `stop_previous`: Whether other sounds that are playing should be stopped.
 
 Diesel will call your callback function with the following arguments:
 ```lua

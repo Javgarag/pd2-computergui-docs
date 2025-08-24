@@ -2,7 +2,7 @@
 The ComputerGui class is a custom-made unit extension that adds an interactable screen (through mouse input) with window management logic to a select object inside an unit's `.model` file. It is designed to be highly customizable through Lua configuration, allowing you to make your own 2D object classes to later reuse in many different windows.
 
 ## Installation
-1. Download the extension files and extract it to your map's root folder.
+1. Download the extension files and extract them to your map's root folder.
 2. Add the following XML to your `main.xml` file, outside the `<level>` tag:
 ```xml
 <AddFiles directory="assets">
@@ -30,19 +30,25 @@ The ComputerGui class is a custom-made unit extension that adds an interactable 
 You're now all set to use the extension.
 
 ## Unit setup
-See [this page](https://wiki.modworkshop.net/books/payday-2-mod-creation/page/unit-file) for reference on `.unit` files. For this extension, the bare minimum that needs to be included in your `.unit` file's extensions is:
+See [this page](https://wiki.modworkshop.net/books/payday-2-mod-creation/page/unit-file) for reference on `.unit` files. For this extension, the bare minimum that needs to be included in your `.unit` file is:
 ```xml
-<extension name="damage" class="UnitDamage"/>
-<extension name="computer_gui" class="ComputerGui">
-    <var name="gui_object" value="timer_gui"/>
-    <var name="camera_object" value="camera_object_name"/>
-    <var name="tweak_data" value="tweak_data_name"/>
-</extension>
+<extensions>
+    <extension name="damage" class="UnitDamage"/>
+    <extension name="computer_gui" class="ComputerGui">
+        <var name="gui_object" value="timer_gui"/>
+        <var name="camera_object" value="camera_object_name"/>
+        <var name="tweak_data" value="tweak_data_name"/>
+    </extension>
+</extensions>
+<sounds>
+    <default_soundsource source="soundsource_name"/>
+</sounds>
 ```
 * `UnitDamage`: A base game extension which is required for sequence managers.
 * `gui_object`: Where the graphical interface will be created and displayed. This is the name of an object inside the model, which should be a plane (curved surfaces not tested, but would probably not work).
 * `camera_object`: An empty where the camera will be locked when entering the interaction state.
 * `tweak_data`: The `tweak_data.computer_gui` entry containing your workspace and application definitions. More information on this on the next section.
+* `default_soundsource`: A soundsorce for playing sound events through *ComputerGui* and other extensions.
 
 To actually start-up the screen, you'll also need some sort of interaction extension in your unit. You can find plenty of them in the base game. By default, they look for the `interact` sequence in your unit's [sequence manager](https://wiki.modworkshop.net/books/payday-2-mod-creation/page/sequence-manager-xml). This sequence should include a reference to the extension's `start` method and pass `params.unit` as the first parameter:
 ```xml
@@ -59,12 +65,13 @@ An empty configuration file, with no applications or workspaces defined, will re
 local MODULE_DIRECTORY = BeardLib.current_level._mod.ModPath .. "classes/ComputerGui/modules/"
 local REQUIRED_MODULES = {
     "base/ComputerObjectBase.lua",
-    "base/ComputerWindow.lua",
-	"base/ComputerBitmap.lua",
+    "base/ComputerWindow.lua"
+}
+local modules = {
+    "base/ComputerBitmap.lua",
     "base/ComputerText.lua",
     "base/ComputerRect.lua"
 }
-local modules = {}
 
 for _, module in pairs(REQUIRED_MODULES) do
 	dofile(MODULE_DIRECTORY .. module)
@@ -77,7 +84,7 @@ tweak_data.computer_gui = {}
 ```
 * `MODULE_DIRECTORY`: The directory inside your map where module files are to be loaded from.
 * `REQUIRED_MODULES`: Absolute dependencies *ComputerGui* needs in order to work.
-* `modules`: A table containing module files, inside which, you define classes based on [ComputerObjectBase](modules/classes/ComputerObjectBase.md). ComputerGui comes with some extra modules as example material; feel free to modify them.
+* `modules`: A table containing module files, inside which, you define classes based on [ComputerObjectBase](modules/classes/ComputerObjectBase.md). ComputerGui comes with some modules as example material; feel free to modify them.
 * `dofile(BeardLib...`: Module loader, which first loads *ComputerObjectBase* (required) and then any other modules specified in `modules`. 
 * `tweak_data.computer_gui`: Tweak data table the extension will refer to when loading your configuration.
 
@@ -185,3 +192,5 @@ Currently, *ComputerGui* only listens to left mouse button clicks.
 The screen workspace is greatly affected by your environment's bloom value. Play around with it until you are satisfied about how the interface looks.
 ### Multiplayer
 *ComputerGui* syncs mouse movement, presses, releases, and interaction interface closures. Everything else is left up to the local player. In practice, everything from window movement to their events and sounds will be synced. Dropping in when the mission has already started has not been thoroughly tested.
+### Spawning child windows
+Do not create child windows yourself; use events of type `spawn` and trigger them with `trigger_event()`. See [Events](events.md).
