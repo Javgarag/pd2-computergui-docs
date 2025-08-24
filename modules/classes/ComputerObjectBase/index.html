@@ -126,17 +126,20 @@
 <h1 id="computerobjectbase">ComputerObjectBase</h1>
 <p>Shared base class that any object module requires in order to function. Overriding methods from this class is possible as with any other PAYDAY 2 class; use <code>{Module name}.super.{ComputerObjectBase method}(self, ...)</code> to refer back to this class.</p>
 <h2 id="tweak-data-values">Tweak data values</h2>
+<p><em>Default values:</em></p>
 <pre><code class="language-lua">{
     config = {},
     events = {},
-    mouse_variant = &quot;arrow&quot;
+    mouse_variant = &quot;arrow&quot;,
+    update_enabled = true
 }
 </code></pre>
 <ul>
 <li><code>config</code>: A table containing the values that will be passed to Diesel to create interface objects. A malformed configuration table will crash the game with an <em>access violation</em>. You can use computed properties here to inherit config values from parent objects (see below).
  to be contained in <em>ComputerWindow</em> instances.</li>
 <li><code>events</code>: The events table. See <a href="../../../events/">Events</a>.</li>
-<li><code>mouse_variant</code>: Determines what texture rect the mouse texture should have when over the object.  Possible values are <code>arrow</code> (default), <code>link</code>, <code>hand</code> and <code>grab</code>; you can define more at <code>ComputerGui.mouse_variants</code>.</li>
+<li><code>mouse_variant</code>: Determines what texture rect the mouse texture should have when over the object.  Possible values are <code>arrow</code>, <code>link</code>, <code>hand</code> and <code>grab</code>; you can define more at <code>ComputerGui.mouse_variants</code>.</li>
+<li><code>update_enabled</code>: Determines if the <code>update()</code> method should be ran every frame. If the method doesn't exist, the update will be ignored for that object.</li>
 </ul>
 <p><em>ComputerWindow</em> instances have some more entries in addition to the previous values. See their <a href="../ComputerWindow/">tweak data configuration guide</a>.</p>
 <h2 id="methods">Methods</h2>
@@ -145,7 +148,7 @@
 <h3 id="computerobjectbasepost_create"><code>ComputerObjectBase:post_create()</code></h3>
 <p>Sets up the events after all the objects are created for proper callbacks.</p>
 <h3 id="computerobjectbasesetup_events"><code>ComputerObjectBase:setup_events()</code></h3>
-<p>Sets up possible events of type <code>callback</code> <em>(implemented)</em> or <code>spawn</code> <em>(not implemented)</em>. </p>
+<p>Sets up possible events of type <code>callback</code> or <code>spawn</code>. </p>
 <h3 id="computerobjectbasecompute_properties"><code>ComputerObjectBase:compute_properties()</code></h3>
 <p>Runs function-type properties inside <code>config</code> by passing <code>self</code> as the first argument and sets those properties to the functions' return values. This can be useful to inherit parent object values. An example of a computed property would be:</p>
 <pre><code class="language-lua">w = function(self)
@@ -154,6 +157,10 @@ end
 </code></pre>
 <h3 id="computerobjectbasetrigger_eventevent_name"><code>ComputerObjectBase:trigger_event(event_name, ...)</code></h3>
 <p>Triggers the corresponding event on itself and passes any extra arguments to the corresponding handler.</p>
+<h3 id="computerobjectbaseset_update_enabledenabled"><code>ComputerObjectBase:set_update_enabled(enabled)</code></h3>
+<p>Toggle the execution of the object's <code>update()</code> method on every frame.</p>
+<h3 id="computerobjectbaseupdate_enabled"><code>ComputerObjectBase:update_enabled()</code></h3>
+<p>Returns whether this object's update is enabled or not.</p>
 <h3 id="computerobjectbaseis_visiblex-y"><code>ComputerObjectBase:is_visible(x, y)</code></h3>
 <p>Returns whether the object is visible at position <code>(x, y)</code> or not, that is, it is not obscured by windows and it itself is visible (through <code>Object:visible()</code>).</p>
 <h3 id="computerobjectbasemouse_variant"><code>ComputerObjectBase:mouse_variant()</code></h3>
@@ -162,6 +169,8 @@ end
 <p>Returns the Diesel object.</p>
 <h3 id="computerobjectbasechildren"><code>ComputerObjectBase:children()</code></h3>
 <p>Returns the instance's children instances.</p>
+<h3 id="computerobjectbaseparent"><code>ComputerObjectBase:parent()</code></h3>
+<p>Returns the instance's parent object.</p>
 <h2 id="values">Values</h2>
 <h3 id="self_parent"><code>self._parent</code></h3>
 <p>Returns the parent <em>ComputerWindow</em>.</p></div>

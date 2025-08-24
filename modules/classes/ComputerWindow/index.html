@@ -124,7 +124,7 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#note-on-layers" class="nav-link">Note on layers</a>
+            <li class="nav-item" data-bs-level="2"><a href="#notes" class="nav-link">Notes</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -139,14 +139,19 @@
 <p><em>This module inherits from <a href="../ComputerObjectBase/">ComputerObjectBase</a>.</em></p>
 <p>A panel created as a child of another panel which can be parent to any type of object.</p>
 <h2 id="tweak-data-values">Tweak data values</h2>
+<p><em>Default values:</em></p>
 <pre><code class="language-lua">{
     children = {},
-    background_color = Color()
+    background_color = Color.black,
+    can_user_close = true,
+    can_user_drag = true
 }
 </code></pre>
 <ul>
 <li><code>children</code>: A table containing module instances (created by running their <code>new(tweak_data)</code> method and providing a tweak table, see <a href="../ComputerObjectBase/">ComputerObjectBase</a>).</li>
 <li><code>background_color</code>: The background color for the window. </li>
+<li><code>can_user_close</code>: Whether the window is closable by the user or not.</li>
+<li><code>can_user_drag</code>: Whether the window is draggable by the user or not.</li>
 </ul>
 <h2 id="setup">Setup</h2>
 <h3 id="computerwindowinittweak_data"><code>ComputerWindow:init(tweak_data)</code></h3>
@@ -173,8 +178,22 @@
 <p>Returns the mouse variant specified for an object that contains position <code>(x, y)</code>. Defaults to "arrow".</p>
 <h3 id="computerwindowis_open"><code>ComputerWindow:is_open()</code></h3>
 <p>Returns whether the window is open or not.</p>
-<h2 id="note-on-layers">Note on layers</h2>
-<p>You are free to use layers in your windows however you like. <em>ComputerGui</em> will automatically calculate the layers you are using in a particular window and take those into account when managing multiple windows at once to avoid clipping.</p></div>
+<h3 id="computerwindowis_spawned"><code>ComputerWindow:is_spawned()</code></h3>
+<p>Returns whether the window is a spawned window or not.</p>
+<h3 id="computerwindowactive_child_window"><code>ComputerWindow:active_child_window()</code></h3>
+<p>Returns the outermost child window currently active under the window, that is:</p>
+<ul>
+<li>If there is a single spawned window present, that will be returned</li>
+<li>If a spawned window spawned another window, the latest spawned window will be returned</li>
+</ul>
+<p>If no child window is found, returns <code>nil</code>.</p>
+<h3 id="computerwindowclose_child_windows"><code>ComputerWindow:close_child_windows()</code></h3>
+<p>Close every child window currently active under the window.</p>
+<h2 id="notes">Notes</h2>
+<h3 id="layers">Layers</h3>
+<p>You are free to use layers in your windows however you like. <em>ComputerGui</em> will automatically calculate the layers you are using in a particular window and take those into account when managing multiple windows at once to avoid clipping.</p>
+<h3 id="traversing-child-windows">Traversing child windows</h3>
+<p>You can reference child window objects either through direct children (<code>self._parent</code>) or through the main window's <code>child_window</code>. The latter can be recursively applied through all child windows.</p></div>
             </div>
         </div>
 

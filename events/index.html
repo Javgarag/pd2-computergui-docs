@@ -229,12 +229,14 @@
 </ul>
 <h2 id="playing-sounds">Playing sounds</h2>
 <p>To play sounds on events, add a <code>post_event</code> table with the event ID you want to play (the corresponding soundbank should be loaded if it is a vanilla sound; disregard for custom sounds, more info on event IDs <a href="https://modworkshop.net/mod/53326">here</a>). </p>
+<p><em>The following are sample values and not default.</em></p>
 <pre><code class="language-lua">post_event = {
     sound_event_id = &quot;highlight&quot;,
     clbk = &quot;clbk_highlight_sound_end&quot;,
     flags = {
         &quot;end_of_event&quot;
-    }
+    },
+    stop_previous = false
 }
 </code></pre>
 <ul>
@@ -246,6 +248,7 @@
 <li><code>duration</code></li>
 </ul>
 </li>
+<li><code>stop_previous</code>: Whether other sounds that are playing should be stopped.</li>
 </ul>
 <p>Diesel will call your callback function with the following arguments:</p>
 <pre><code class="language-lua">callback_func(instance, sound_source, event_type, cookie, label, identifier, position)

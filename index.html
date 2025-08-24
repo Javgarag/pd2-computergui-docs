@@ -131,7 +131,7 @@
 <p>The ComputerGui class is a custom-made unit extension that adds an interactable screen (through mouse input) with window management logic to a select object inside an unit's <code>.model</code> file. It is designed to be highly customizable through Lua configuration, allowing you to make your own 2D object classes to later reuse in many different windows.</p>
 <h2 id="installation">Installation</h2>
 <ol>
-<li>Download the extension files and extract it to your map's root folder.</li>
+<li>Download the extension files and extract them to your map's root folder.</li>
 <li>Add the following XML to your <code>main.xml</code> file, outside the <code>&lt;level&gt;</code> tag:</li>
 </ol>
 <pre><code class="language-xml">&lt;AddFiles directory=&quot;assets&quot;&gt;
@@ -159,19 +159,25 @@
 </code></pre>
 <p>You're now all set to use the extension.</p>
 <h2 id="unit-setup">Unit setup</h2>
-<p>See <a href="https://wiki.modworkshop.net/books/payday-2-mod-creation/page/unit-file">this page</a> for reference on <code>.unit</code> files. For this extension, the bare minimum that needs to be included in your <code>.unit</code> file's extensions is:</p>
-<pre><code class="language-xml">&lt;extension name=&quot;damage&quot; class=&quot;UnitDamage&quot;/&gt;
-&lt;extension name=&quot;computer_gui&quot; class=&quot;ComputerGui&quot;&gt;
-    &lt;var name=&quot;gui_object&quot; value=&quot;timer_gui&quot;/&gt;
-    &lt;var name=&quot;camera_object&quot; value=&quot;camera_object_name&quot;/&gt;
-    &lt;var name=&quot;tweak_data&quot; value=&quot;tweak_data_name&quot;/&gt;
-&lt;/extension&gt;
+<p>See <a href="https://wiki.modworkshop.net/books/payday-2-mod-creation/page/unit-file">this page</a> for reference on <code>.unit</code> files. For this extension, the bare minimum that needs to be included in your <code>.unit</code> file is:</p>
+<pre><code class="language-xml">&lt;extensions&gt;
+    &lt;extension name=&quot;damage&quot; class=&quot;UnitDamage&quot;/&gt;
+    &lt;extension name=&quot;computer_gui&quot; class=&quot;ComputerGui&quot;&gt;
+        &lt;var name=&quot;gui_object&quot; value=&quot;timer_gui&quot;/&gt;
+        &lt;var name=&quot;camera_object&quot; value=&quot;camera_object_name&quot;/&gt;
+        &lt;var name=&quot;tweak_data&quot; value=&quot;tweak_data_name&quot;/&gt;
+    &lt;/extension&gt;
+&lt;/extensions&gt;
+&lt;sounds&gt;
+    &lt;default_soundsource source=&quot;soundsource_name&quot;/&gt;
+&lt;/sounds&gt;
 </code></pre>
 <ul>
 <li><code>UnitDamage</code>: A base game extension which is required for sequence managers.</li>
 <li><code>gui_object</code>: Where the graphical interface will be created and displayed. This is the name of an object inside the model, which should be a plane (curved surfaces not tested, but would probably not work).</li>
 <li><code>camera_object</code>: An empty where the camera will be locked when entering the interaction state.</li>
 <li><code>tweak_data</code>: The <code>tweak_data.computer_gui</code> entry containing your workspace and application definitions. More information on this on the next section.</li>
+<li><code>default_soundsource</code>: A soundsorce for playing sound events through <em>ComputerGui</em> and other extensions.</li>
 </ul>
 <p>To actually start-up the screen, you'll also need some sort of interaction extension in your unit. You can find plenty of them in the base game. By default, they look for the <code>interact</code> sequence in your unit's <a href="https://wiki.modworkshop.net/books/payday-2-mod-creation/page/sequence-manager-xml">sequence manager</a>. This sequence should include a reference to the extension's <code>start</code> method and pass <code>params.unit</code> as the first parameter:</p>
 <pre><code class="language-xml">&lt;sequence editable_state=&quot;false&quot; name=&quot;'interact'&quot; triggable=&quot;false&quot;&gt;
@@ -184,12 +190,13 @@
 <pre><code class="language-lua">local MODULE_DIRECTORY = BeardLib.current_level._mod.ModPath .. &quot;classes/ComputerGui/modules/&quot;
 local REQUIRED_MODULES = {
     &quot;base/ComputerObjectBase.lua&quot;,
-    &quot;base/ComputerWindow.lua&quot;,
+    &quot;base/ComputerWindow.lua&quot;
+}
+local modules = {
     &quot;base/ComputerBitmap.lua&quot;,
     &quot;base/ComputerText.lua&quot;,
     &quot;base/ComputerRect.lua&quot;
 }
-local modules = {}
 
 for _, module in pairs(REQUIRED_MODULES) do
     dofile(MODULE_DIRECTORY .. module)
@@ -203,7 +210,7 @@ tweak_data.computer_gui = {}
 <ul>
 <li><code>MODULE_DIRECTORY</code>: The directory inside your map where module files are to be loaded from.</li>
 <li><code>REQUIRED_MODULES</code>: Absolute dependencies <em>ComputerGui</em> needs in order to work.</li>
-<li><code>modules</code>: A table containing module files, inside which, you define classes based on <a href="modules/classes/ComputerObjectBase/">ComputerObjectBase</a>. ComputerGui comes with some extra modules as example material; feel free to modify them.</li>
+<li><code>modules</code>: A table containing module files, inside which, you define classes based on <a href="modules/classes/ComputerObjectBase/">ComputerObjectBase</a>. ComputerGui comes with some modules as example material; feel free to modify them.</li>
 <li><code>dofile(BeardLib...</code>: Module loader, which first loads <em>ComputerObjectBase</em> (required) and then any other modules specified in <code>modules</code>. </li>
 <li><code>tweak_data.computer_gui</code>: Tweak data table the extension will refer to when loading your configuration.</li>
 </ul>
@@ -308,7 +315,9 @@ tweak_data.computer_gui = {}
 <h3 id="bloom">Bloom</h3>
 <p>The screen workspace is greatly affected by your environment's bloom value. Play around with it until you are satisfied about how the interface looks.</p>
 <h3 id="multiplayer">Multiplayer</h3>
-<p><em>ComputerGui</em> syncs mouse movement, presses, releases, and interaction interface closures. Everything else is left up to the local player. In practice, everything from window movement to their events and sounds will be synced. Dropping in when the mission has already started has not been thoroughly tested.</p></div>
+<p><em>ComputerGui</em> syncs mouse movement, presses, releases, and interaction interface closures. Everything else is left up to the local player. In practice, everything from window movement to their events and sounds will be synced. Dropping in when the mission has already started has not been thoroughly tested.</p>
+<h3 id="spawning-child-windows">Spawning child windows</h3>
+<p>Do not create child windows yourself; use events of type <code>spawn</code> and trigger them with <code>trigger_event()</code>. See <a href="events/">Events</a>.</p></div>
             </div>
         </div>
 
@@ -390,5 +399,5 @@ tweak_data.computer_gui = {}
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-08-20 02:33:34.942281+00:00
+Build Date UTC : 2025-08-24 20:50:32.140732+00:00
 -->
